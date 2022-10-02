@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // 判断是否是falsy类型的值
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
@@ -41,4 +41,25 @@ export const useDebounce = <T>(value: T, delay?: number) => {
   }, [value, delay]);
 
   return debounceValue;
+};
+
+// 自定义修改标题的钩子
+export const useDocumentTitle: (
+  title: string,
+  keeponUnmount?: boolean
+) => void = (title, keeponUnmount = false) => {
+  // const oldTitle = document.title;
+  const oldTitle = useRef(document.title).current;
+
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
+  useEffect(() => {
+    return () => {
+      if (keeponUnmount) {
+        document.title = oldTitle;
+      }
+    };
+  }, [oldTitle, keeponUnmount]);
 };

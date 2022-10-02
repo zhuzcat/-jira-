@@ -3,7 +3,7 @@ import { Typography } from "antd";
 import List from "./list";
 import SearchPanel from "./search-panel";
 import styled from "@emotion/styled";
-import { useDebounce } from "utils";
+import { useDebounce, useDocumentTitle } from "utils";
 import { useProjects } from "utils/projects";
 import { useUser } from "utils/users";
 
@@ -16,6 +16,9 @@ const ProjectList = () => {
   const debounceParam = useDebounce(param, 200);
   const { isLoading, data: list, error } = useProjects(debounceParam);
   const { data: users } = useUser();
+
+  // 定义标题
+  useDocumentTitle("项目列表");
 
   return (
     <Container>
