@@ -16,8 +16,10 @@ interface ListProps extends TableProps<Project> {
 }
 
 const List = ({ users, ...props }: ListProps) => {
+  const a: any = undefined;
   return (
     <div>
+      {a.aa}
       <Table
         rowKey={"id"}
         pagination={false}
