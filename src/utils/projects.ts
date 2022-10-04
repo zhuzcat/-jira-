@@ -10,7 +10,26 @@ export const useProjects = (params: Partial<Project>) => {
   const { run, ...result } = useAsync<Project[]>();
   // 发送请求获取产品列表
   useEffect(() => {
-    run(client("projects", { data: cleanObject(params) }));
-  }, [params]);
+    run(client("projects", { data: cleanObject(params) }), {
+      retry: () => client("projects", { data: cleanObject(params) }),
+    });
+  }, [params, run, client]);
   return result;
+};
+
+export const useEditProject = () => {
+  const { run, ...restAsync } = useAsync();
+  const client = useHttp();
+  const mutate = async (param: Partial<Project>) => {
+    await run(
+      client(`projects/${param.id}`, {
+        method: "PATCH",
+        data: param,
+      })
+    );
+  };
+  return {
+    mutate,
+    restAsync,
+  };
 };

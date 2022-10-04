@@ -8,15 +8,18 @@ import { useUser } from "utils/users";
 import { useProjectParam } from "./utils";
 
 const ProjectList = () => {
-  const [param, setParam] = useProjectParam();
-  // 通过防抖的方式设置参数
-  const { isLoading, data: list, error } = useProjects(useDebounce(param, 200));
-  const { data: users } = useUser();
-
-  console.log(param);
-
   // 定义标题
   useDocumentTitle("项目列表");
+
+  const [param, setParam] = useProjectParam();
+  // 通过防抖的方式设置参数
+  const {
+    isLoading,
+    data: list,
+    error,
+    retry,
+  } = useProjects(useDebounce(param, 200));
+  const { data: users } = useUser();
 
   return (
     <Container>
@@ -25,7 +28,12 @@ const ProjectList = () => {
       {error ? (
         <Typography.Text type="danger">{error.message}</Typography.Text>
       ) : null}
-      <List loading={isLoading} dataSource={list || []} users={users || []} />
+      <List
+        reload={retry}
+        loading={isLoading}
+        dataSource={list || []}
+        users={users || []}
+      />
     </Container>
   );
 };
