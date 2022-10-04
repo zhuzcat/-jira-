@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Typography } from "antd";
 import List from "./list";
 import SearchPanel from "./search-panel";
@@ -6,16 +5,15 @@ import styled from "@emotion/styled";
 import { useDebounce, useDocumentTitle } from "utils";
 import { useProjects } from "utils/projects";
 import { useUser } from "utils/users";
+import { useProjectParam } from "./utils";
 
 const ProjectList = () => {
-  const [param, setParam] = useState({
-    name: "",
-    personId: "",
-  });
+  const [param, setParam] = useProjectParam();
   // 通过防抖的方式设置参数
-  const debounceParam = useDebounce(param, 200);
-  const { isLoading, data: list, error } = useProjects(debounceParam);
+  const { isLoading, data: list, error } = useProjects(useDebounce(param, 200));
   const { data: users } = useUser();
+
+  console.log(param);
 
   // 定义标题
   useDocumentTitle("项目列表");

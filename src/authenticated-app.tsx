@@ -7,6 +7,9 @@ import { Row } from "components/lib";
 import styled from "@emotion/styled";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
 import ProjectScreen from "screens/project";
+import KanbanScreen from "screens/kanban";
+import EpicScreen from "screens/epic";
+import { resetRouter } from "utils";
 
 const AuthenticatedApp = () => {
   return (
@@ -16,7 +19,12 @@ const AuthenticatedApp = () => {
         <Router>
           <Routes>
             <Route path="/projects" element={<ProjectList />} />
-            <Route path="/projects/:projectId" element={<ProjectScreen />} />
+            <Route path="/projects/:projectId" element={<ProjectScreen />}>
+              <Route path="kanban" element={<KanbanScreen />} />
+              <Route path="epic" element={<EpicScreen />} />
+              <Route index element={<Navigate to="kanban" />} />
+            </Route>
+            <Route index element={<Navigate to="projects" />} />
           </Routes>
         </Router>
       </Main>
@@ -29,7 +37,9 @@ const Header = () => {
   return (
     <PageHeader between>
       <PageLeft gap={2}>
-        <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
+        <Button type="link" onClick={resetRouter}>
+          <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
+        </Button>
         <h2>项目</h2>
         <h2>组员</h2>
       </PageLeft>

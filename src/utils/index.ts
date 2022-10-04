@@ -63,3 +63,7 @@ export const useDocumentTitle: (
     };
   }, [oldTitle, keeponUnmount]);
 };
+
+// 重置路由
+export const resetRouter = () =>
+  (window.location.href = window.location.origin);
