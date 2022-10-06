@@ -6,26 +6,28 @@ type SelectProps = React.ComponentProps<typeof Select>;
 // 定义id选择器的props接口 需要将antd中Select的相关项排除掉
 interface IdSelectProps
   extends Omit<SelectProps, "value" | "onChange" | "options"> {
-  value: string | number | null | undefined;
-  onChange: (value?: number) => void;
+  value?: string | number | null | undefined;
+  onChange?: (value?: number) => void;
   options?: { name: string; id: number }[];
-  defaultValue?: string;
+  defaultOption?: string;
 }
 
 const IdSelect = ({
   value,
   onChange,
   options,
-  defaultValue,
+  defaultOption,
   ...restProps
 }: IdSelectProps) => {
   return (
     <Select
       value={options?.length ? toNumber(value) : 0}
-      onChange={(value) => onChange(toNumber(value) || undefined)}
+      onChange={(value) => onChange?.(toNumber(value) || undefined)}
       {...restProps}
     >
-      {defaultValue && <Select.Option value={0}>{defaultValue}</Select.Option>}
+      {defaultOption && (
+        <Select.Option value={0}>{defaultOption}</Select.Option>
+      )}
       {options?.map((item) => {
         return (
           <Select.Option key={toNumber(item.id)} value={toNumber(item.id)}>

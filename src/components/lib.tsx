@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Spin, Typography } from "antd";
+import { Button, Spin, Typography } from "antd";
 
 // row样式
 export const Row = styled.div<{
@@ -45,7 +45,22 @@ export const FullPageLoading = () => {
 export const FullPageErrorFallBack = ({ error }: { error: Error | null }) => {
   return (
     <FullPageDiv>
-      <Typography.Text type="danger">{error?.message}</Typography.Text>
+      <ErrorBox error={error} />
     </FullPageDiv>
   );
 };
+
+// 错误的类型守卫
+export const isError = (value: any): value is Error => value?.message;
+
+export const ErrorBox = ({ error }: { error: unknown }) => {
+  if (isError(error)) {
+    return <Typography.Text type="danger">{error?.message}</Typography.Text>;
+  }
+  return null;
+};
+
+// 无内边距的Button
+export const ButtonNoPadding = styled(Button)`
+  padding: 0;
+`;

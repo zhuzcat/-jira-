@@ -1,9 +1,11 @@
-import { Table, TableProps } from "antd";
+import { Dropdown, Menu, Modal, Table, TableProps } from "antd";
 import { User } from "types/user";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import Pin from "components/pin";
-import { useEditProject } from "utils/projects";
+import { useDeleteProject, useEditProject } from "utils/projects";
+import { ButtonNoPadding } from "components/lib";
+import { useProjectModal, useProjectsQueryKey } from "./utils";
 
 export interface Project {
   id: number;
@@ -16,14 +18,12 @@ export interface Project {
 
 interface ListProps extends TableProps<Project> {
   users: User[];
-  reload: () => void;
 }
 
-const List = ({ users, reload, ...props }: ListProps) => {
+const List = ({ users, ...props }: ListProps) => {
   // 通过函数柯里化 定义pin项目的方法
-  const { mutate } = useEditProject();
-  const pinProject = (id: number) => (pin: boolean) =>
-    mutate({ id, pin }).then(reload);
+  const { mutate } = useEditProject(useProjectsQueryKey());
+  const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
 
   return (
     <div>
@@ -82,9 +82,55 @@ const List = ({ users, reload, ...props }: ListProps) => {
               );
             },
           },
+          {
+            render(value, project) {
+              return <More project={project} />;
+            },
+          },
         ]}
       />
     </div>
   );
 };
+
+const More = ({ project }: { project: Project }) => {
+  const { startEdit } = useProjectModal();
+
+  const { mutate } = useDeleteProject(useProjectsQueryKey());
+  const confirmDelete = (id: number) => {
+    Modal.confirm({
+      title: "确定删除这个项目吗？",
+      content: "点击确认删除",
+      okText: "确认",
+      onOk: () => {
+        mutate({ id });
+      },
+    });
+  };
+
+  return (
+    <Dropdown
+      overlay={
+        <Menu>
+          <Menu.Item key={"edit"}>
+            <ButtonNoPadding type="link" onClick={() => startEdit(project.id)}>
+              编辑
+            </ButtonNoPadding>
+          </Menu.Item>
+          <Menu.Item key={"delete"}>
+            <ButtonNoPadding
+              type="link"
+              onClick={() => confirmDelete(project.id)}
+            >
+              删除
+            </ButtonNoPadding>
+          </Menu.Item>
+        </Menu>
+      }
+    >
+      <ButtonNoPadding type="link">...</ButtonNoPadding>
+    </Dropdown>
+  );
+};
+
 export default List;

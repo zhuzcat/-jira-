@@ -24,7 +24,7 @@ const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
       <Form.Item>
         <UserSelect
           value={param.personId}
-          defaultValue="负责人"
+          defaultOption="负责人"
           onChange={(value) => setParam({ ...param, personId: value })}
         />
       </Form.Item>
