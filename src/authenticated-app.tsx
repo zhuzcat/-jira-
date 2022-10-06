@@ -89,6 +89,9 @@ const PageLeft = styled(Row)``;
 
 const PageRight = styled.div``;
 
-const Main = styled.main``;
+const Main = styled.main`
+  display: flex;
+  overflow: hidden;
+`;
 
 export default AuthenticatedApp;
