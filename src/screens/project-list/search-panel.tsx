@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { Form, Input } from "antd";
 import { User } from "types/user";
-import { Project } from "./list";
+import { Project } from "types/project";
 import UserSelect from "components/user-select";
 
 interface SearchPanelProps {

@@ -24,7 +24,7 @@ const AuthenticatedApp = () => {
             <Route path="/projects/:projectId" element={<ProjectScreen />}>
               <Route path="kanban" element={<KanbanScreen />} />
               <Route path="epic" element={<EpicScreen />} />
-              <Route index element={<Navigate to="kanban" />} />
+              <Route index element={<Navigate to="kanban" replace />} />
             </Route>
             <Route index element={<Navigate to="projects" />} />
           </Routes>

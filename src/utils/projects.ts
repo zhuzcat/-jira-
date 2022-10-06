@@ -1,7 +1,6 @@
 import { useHttp } from "./http";
-import { Project } from "screens/project-list/list";
-import { QueryKey, useMutation, useQuery, useQueryClient } from "react-query";
-import { useProjectParam } from "screens/project-list/utils";
+import { Project } from "types/project";
+import { QueryKey, useMutation, useQuery } from "react-query";
 import {
   useAddConfig,
   useDeleteConfig,

@@ -27,6 +27,11 @@ const ProjectDrawer = () => {
     });
   };
 
+  const closeModal = () => {
+    close();
+    form.resetFields();
+  };
+
   // 在编辑的项目改变时 修改form值
   useEffect(() => {
     form.setFieldsValue(editingProject);
@@ -35,7 +40,12 @@ const ProjectDrawer = () => {
   const title = editingProject ? "编辑项目" : "添加项目";
 
   return (
-    <Drawer forceRender width={"100%"} open={projectModalOpen} onClose={close}>
+    <Drawer
+      forceRender
+      width={"100%"}
+      open={projectModalOpen}
+      onClose={closeModal}
+    >
       <Container>
         {isLoading ? (
           <Spin size="large" />

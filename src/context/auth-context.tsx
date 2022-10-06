@@ -1,5 +1,6 @@
 import { FullPageErrorFallBack, FullPageLoading } from "components/lib";
 import React, { ReactNode } from "react";
+import { useQueryClient } from "react-query";
 import { useMount } from "utils";
 import { http } from "utils/http";
 import { useAsync } from "utils/use-async";
@@ -43,9 +44,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isLoading,
     error,
   } = useAsync<User | null>();
+  const queryClient = useQueryClient();
+
   const login = (form: AuthForm) => auth.login(form).then(setUser);
   const register = (form: AuthForm) => auth.register(form).then(setUser);
-  const logout = () => auth.logout().then(() => setUser(null));
+  const logout = () =>
+    auth.logout().then(() => {
+      setUser(null);
+      // 清除原来的缓存
+      queryClient.clear();
+    });
 
   // 在context挂载时，初始化用户信息
   useMount(() => {
