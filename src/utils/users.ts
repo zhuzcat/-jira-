@@ -1,15 +1,11 @@
-import { useEffect } from "react";
+import { useQuery } from "react-query";
 import { User } from "types/user";
-import { cleanObject } from "utils";
 import { useHttp } from "./http";
-import { useAsync } from "./use-async";
 
-export const useUser = (param?: Partial<User>) => {
-  const clinet = useHttp();
-  const { run, ...result } = useAsync<User[]>();
-  useEffect(() => {
-    run(clinet("users", cleanObject(param || {})));
-  }, [param]);
-
-  return result;
+export const useUser = (params?: Partial<User>) => {
+  // 获取发送请求的钩子
+  const client = useHttp();
+  return useQuery<User[]>(["users", params], () =>
+    client("users", { data: params })
+  );
 };

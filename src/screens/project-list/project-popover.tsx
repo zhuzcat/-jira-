@@ -7,7 +7,7 @@ import { useProjectModal } from "./utils";
 const ProjectPopover = () => {
   const { open } = useProjectModal();
   // 获取收藏项目列表
-  const { data: projects } = useProjects();
+  const { data: projects, refetch } = useProjects();
 
   const pinnedProjects = projects?.filter((project) => project.pin);
 
@@ -32,7 +32,11 @@ const ProjectPopover = () => {
   );
 
   return (
-    <Popover placement="bottom" content={content}>
+    <Popover
+      onVisibleChange={() => refetch()}
+      placement="bottom"
+      content={content}
+    >
       <span>项目</span>
     </Popover>
   );

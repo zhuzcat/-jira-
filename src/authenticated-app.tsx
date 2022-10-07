@@ -12,6 +12,7 @@ import EpicScreen from "screens/epic";
 import { resetRouter } from "utils";
 import ProjectDrawer from "screens/project-list/project-drawer";
 import ProjectPopover from "screens/project-list/project-popover";
+import UserPopover from "components/user-popover";
 
 const AuthenticatedApp = () => {
   return (
@@ -43,7 +44,7 @@ const Header = () => {
           <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
         </ButtonNoPadding>
         <ProjectPopover />
-        <span>组员</span>
+        <UserPopover />
       </PageLeft>
       <PageRight>
         <User />
