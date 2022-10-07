@@ -2,6 +2,7 @@ import { Button, Input } from "antd";
 import { Row } from "components/lib";
 import TaskTypeSelect from "components/task-type-select";
 import UserSelect from "components/user-select";
+import { useDebounce } from "utils";
 import { useSetUrlSearchParam } from "utils/url";
 import { useTaskSearchParams } from "./utils";
 
@@ -9,9 +10,10 @@ const SearchPanel = () => {
   // 获取参数
   const searchParam = useTaskSearchParams();
   const setUrlParam = useSetUrlSearchParam();
+  const debounceName = useDebounce(searchParam.name, 500);
   const reset = () =>
     setUrlParam({
-      name: undefined,
+      name: debounceName,
       processorId: undefined,
       typeId: undefined,
     });

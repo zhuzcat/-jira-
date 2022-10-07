@@ -47,6 +47,7 @@ const Main = styled.div`
 const Container = styled.div`
   display: flex;
   width: 100%;
+  overflow: hidden;
 `;
 
 export default ProjectScreen;

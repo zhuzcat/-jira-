@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useLocation } from "react-router";
 import { useProject } from "utils/projects";
+import { useTask } from "utils/task";
 import { useUrlQueryParam } from "utils/url";
 
 export const useProjectIdUrl = () => {
@@ -33,3 +34,28 @@ export const useTaskSearchParams = () => {
 };
 
 export const useTaskQueryKey = () => ["tasks", useTaskSearchParams()];
+
+// 管理编辑task-modal
+export const useTaskModal = () => {
+  const [{ editingTaskId }, setEditingTaskId] = useUrlQueryParam([
+    "editingTaskId",
+  ]);
+  const { data: editingTask, isLoading } = useTask(Number(editingTaskId));
+  const startEdit = useCallback(
+    (id: number) => {
+      setEditingTaskId({ editingTaskId: id });
+    },
+    [setEditingTaskId]
+  );
+  const close = useCallback(() => {
+    setEditingTaskId({ editingTaskId: undefined });
+  }, [setEditingTaskId]);
+
+  return {
+    editingTaskId,
+    editingTask,
+    isLoading,
+    close,
+    startEdit,
+  };
+};
